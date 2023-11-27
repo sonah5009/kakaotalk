@@ -242,16 +242,20 @@ async def get_chat_rooms(user_key: int):
 
 
 @app.get("/messages")
-async def get_messages(room_key: int, user_key: int):
+async def get_messages(room_key: int):
     conn = sqlite3.connect('kakao.db')
-    cursor = conn.cursor()
+    c = conn.cursor()
 
-    # Fetch messages for the specified chat room
-    cursor.execute(
-        "SELECT message, time_stamp FROM message_table WHERE room_key = ?", (room_key,))
-    messages = cursor.fetchall()
-
-    return {"user_key": user_key, "messages": [{"message": msg[0], "time_stamp": msg[1]} for msg in messages]}
+    c.execute(
+        """SELECT * FROM message_table WHERE room_key = ?""", (room_key,)
+    )
+    rowList = c.fetchall()
+    messages = c.fetchall()
+    print(rowList)
+    print(messages)
+    if not messages:
+        return print("none")
+    return {{"message": msg[1], "time_stamp": msg[4]} for msg in messages}
 
 
 class CreatePersonalChatRoomRequest(BaseModel):
@@ -308,14 +312,29 @@ async def create_or_get_personal_chat_room(request: Request, chat_request: Creat
     return {"room_id": room[0], "room_key": room[1], "room_name": room[2]}
 
 
+@app.post("/insert-message")
+async def insert_message(request: Request):
+    body = await request.json()
+    message = body.get('message')
+    user_key = body.get('user_key')
+    room_key = body.get('room_key')
+
+    if not message or not user_key or not room_key:
+        raise HTTPException(status_code=400, detail="Missing data")
+
+    insert_message_from_message_table(message, user_key, room_key)
+    return {"detail": "Message inserted successfully"}
+
+
 def insert_message_from_message_table(message: str, user_key: int, room_key: int):
-    conn = sqlite3.connect('kakao.db')
-    c = conn.cursor()
-    c.execute(
-        '''INSERT INTO message_table (message, user_key, room_key) VALUES (?, ?, ?)''',
-        (message, user_key, room_key)
-    )
-    conn.commit()
+    # Make sure to handle exceptions and errors appropriately
+    with sqlite3.connect('kakao.db') as conn:
+        c = conn.cursor()
+        c.execute(
+            '''INSERT INTO message_table (message, user_key, room_key) VALUES (?, ?, ?)''',
+            (message, user_key, room_key)
+        )
+        conn.commit()
 
 
 def get_messages_from_message_table(user_key: int, room_key: int):

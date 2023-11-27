@@ -1,25 +1,39 @@
-// app/chat/[roomId]/page.jsx
+// app/chat/[roomKey]/page.jsx
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
+import {
+  useParams,
+  useRouter,
+  usePathname,
+  useSearchParams,
+} from "next/navigation";
 import Messages from "@/components/chat/Messages";
+import MessageInput from "@/components/chat/MessageInput";
 
 const ChatPage = () => {
-  const [messages, setMessages] = useState([]);
-  // const params = useParams();
-  const { roomId } = router.query;
-  const router = useRouter();
+  function extractNumericPart(url) {
+    const match = url.match(/\d+/); // Regular expression to find continuous digits
+    return match ? match[0] : null; // Return the numeric part if found, otherwise null
+  }
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Fetch messages and other chat room details using roomId
+    const url = `${pathname}?${searchParams}`;
+    console.log(url);
+    // You can now use the current URL
     // ...
-  }, [roomId]);
+  }, [pathname, searchParams]);
 
+  const url = `${pathname}?${searchParams}`;
+  const roomKey = extractNumericPart(url);
+  console.log("Room Key:", roomKey);
   return (
     // Render chat room content
     <div>
-      <Messages />
+      <Messages room_key={roomKey} />
+      <MessageInput room_key={roomKey} />
     </div>
   );
 };

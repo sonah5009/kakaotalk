@@ -34,8 +34,6 @@ const FriendList = () => {
   const HandleFriendClick = async (friendKey) => {
     const userKey = parseInt(localStorage.getItem("user_key")); // Get user_key stored in local storage
 
-    console.log("Clicked friend with key:", typeof friendKey);
-    console.log("userKey:", typeof userKey);
     try {
       const response = await axios.post(
         "http://localhost:8000/create-or-get-personal-chat-room",
@@ -44,11 +42,10 @@ const FriendList = () => {
           friend_key: friendKey,
         }
       );
-      console.log("냥", userKey, friendKey);
       const { room_id, room_key, room_name } = response.data;
-      // router.push(`/chat/${room_id}`);
-      router.push(`/chat/${room_key}`, {
-        pathname: `/chat/${room_id}`, // You might still want to pass room_id in URL
+      // router.push(`/dashboard/chat/${room_key}`);
+      router.push(`/dashboard/chat/${room_key}`, {
+        pathname: `/dashboard/chat/${room_key}`, // You might still want to pass room_id in URL
         query: { room_key: room_key }, // Pass room_key as part of the query
       });
     } catch (error) {
