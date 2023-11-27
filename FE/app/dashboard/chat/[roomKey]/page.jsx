@@ -2,13 +2,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Messages from "@/components/chat/Messages";
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
-  const params = useParams();
-  const roomId = params.roomId;
+  // const params = useParams();
+  const { roomId } = router.query;
+  const router = useRouter();
 
   useEffect(() => {
     // Fetch messages and other chat room details using roomId
@@ -17,7 +18,9 @@ const ChatPage = () => {
 
   return (
     // Render chat room content
-    <div></div>
+    <div>
+      <Messages />
+    </div>
   );
 };
 

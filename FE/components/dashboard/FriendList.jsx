@@ -34,23 +34,24 @@ const FriendList = () => {
   const HandleFriendClick = async (friendKey) => {
     const userKey = parseInt(localStorage.getItem("user_key")); // Get user_key stored in local storage
 
-    console.log("Clicked friend with key:", friendKey);
+    console.log("Clicked friend with key:", typeof friendKey);
     console.log("userKey:", typeof userKey);
     try {
       const response = await axios.post(
         "http://localhost:8000/create-or-get-personal-chat-room",
-        {
+
           user_key: userKey,
           friend_key: friendKey,
         }
       );
       console.log("냥", userKey, friendKey);
       const { room_id, room_key, room_name } = response.data;
-      // Navigate to the chat room
-      // window.location.href = `/chat/${room_id}`; // Adjust based on your routing logic
-      router.push(`/chat/${room_id}`);
+      // router.push(`/chat/${room_id}`);
+      router.push(`/chat/${room_key}`, {
+        pathname: `/chat/${room_id}`, // You might still want to pass room_id in URL
+        query: { room_key: room_key }, // Pass room_key as part of the query
+      });
     } catch (error) {
-      console.log("힝");
       console.error("Error creating/getting chat room", error.response.data);
       // Handle error
     }

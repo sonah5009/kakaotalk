@@ -254,19 +254,26 @@ async def get_messages(room_key: int, user_key: int):
     return {"user_key": user_key, "messages": [{"message": msg[0], "time_stamp": msg[1]} for msg in messages]}
 
 
+class CreatePersonalChatRoomRequest(BaseModel):
+    user_key: int
+    friend_key: int
+
+
 @app.post("/create-or-get-personal-chat-room")
-async def create_or_get_personal_chat_room(user_key: int, friend_key):
-    print("post", user_key, friend_key)
+async def create_or_get_personal_chat_room(request: Request, chat_request: CreatePersonalChatRoomRequest):
+    # user_key = request.headers.get("user_key")
+    # if not user_key:
+    #     raise HTTPException(status_code=401, detail="Invalid or expired token")
+
     conn = sqlite3.connect('kakao.db')
     cursor = conn.cursor()
 
     # Check if a chat room between these two users already exists
     cursor.execute("""
-        SELECT id, room_key, room_name FROM chat_room_personal_table 
+        SELECT id, room_key, room_name FROM chat_room_personal_table
         WHERE (user_key = ? AND friend_key = ?) OR (user_key = ? AND friend_key = ?)""",
-                   (friend_key, user_key, user_key, friend_key))
+                   (chat_request.friend_key, chat_request.user_key, chat_request.user_key, chat_request.friend_key))
     room = cursor.fetchone()
-
     if room:
         return {"room_id": room[0], "room_key": room[1], "room_name": room[2]}
 
@@ -278,7 +285,7 @@ async def create_or_get_personal_chat_room(user_key: int, friend_key):
             ?, 
             ?
         )""",
-                   (friend_key, friend_key, user_key))
+                   (chat_request.friend_key, chat_request.friend_key, chat_request.user_key))
     new_room_id = cursor.lastrowid
     new_room_key = new_room_id  # Setting room_key as the new row's id
 
@@ -286,15 +293,16 @@ async def create_or_get_personal_chat_room(user_key: int, friend_key):
     cursor.execute("UPDATE chat_room_personal_table SET room_key = ? WHERE id = ?",
                    (new_room_key, new_room_id))
 
-    cursor.execute("INSERT INTO chat_room_personal_table (room_key, room_name, user_key, friend_key) VALUES (?, (SELECT friend_name FROM friend_table WHERE friend_key = ?), ?, ?)",
-                   (new_room_key, user_key, friend_key, user_key))
+    if chat_request.friend_key != chat_request.user_key:
+        cursor.execute("INSERT INTO chat_room_personal_table (room_key, room_name, user_key, friend_key) VALUES (?, (SELECT friend_name FROM friend_table WHERE friend_key = ?), ?, ?)",
+                       (new_room_key, chat_request.friend_key, chat_request.user_key, chat_request.friend_key))
 
     conn.commit()
 
     cursor.execute("""
         SELECT id, room_key, room_name FROM chat_room_personal_table 
         WHERE (user_key = ? AND friend_key = ?) OR (user_key = ? AND friend_key = ?)""",
-                   (friend_key, user_key, user_key, friend_key))
+                   (chat_request.friend_key, chat_request.user_key, chat_request.user_key, chat_request.friend_key))
     room = cursor.fetchone()
 
     return {"room_id": room[0], "room_key": room[1], "room_name": room[2]}
