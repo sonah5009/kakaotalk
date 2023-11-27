@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+
 const AddFriend = () => {
   const [friendname, setFriendname] = useState("");
   const router = useRouter();

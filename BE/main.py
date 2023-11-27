@@ -50,7 +50,8 @@ def create_database_and_tables():
     # 테이블 생성
     c.execute('''
         CREATE TABLE IF NOT EXISTS friend_table (
-            friend_key INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            friend_key INTEGER,
             friend_name TEXT,
             user_key INTEGER
         )
@@ -136,8 +137,8 @@ async def signup(signup_request: SignupRequest):
     )
     rowList = cursor.fetchall()
     user_key = rowList[0][0]
-    cursor.execute("INSERT INTO friend_table (friend_name, user_key) VALUES (?, ?)",
-                   (signup_request.username, user_key))
+    cursor.execute("INSERT INTO friend_table (friend_key, friend_name, user_key) VALUES (?, ?, ?)",
+                   (user_key, signup_request.username, user_key))
     conn.commit()
 
     return {"message": "Signup successful"}
@@ -169,6 +170,18 @@ def get_current_user_token(request: Request):
     return request.headers.get("Authorization")
 
 
+def get_friend_key(friend_name: str):
+    conn = sqlite3.connect('kakao.db')
+    cursor = conn.cursor()
+
+    # 사용자 정보 확인
+
+    cursor.execute('''SELECT user_key FROM user_table WHERE username = ?''',
+                   (friend_name,))
+    user_key = cursor.fetchone()
+    return user_key
+
+
 @app.post("/addfriend")
 async def add_friend(request: Request, add_friend_request: AddFriendRequest):
 
@@ -186,7 +199,7 @@ async def add_friend(request: Request, add_friend_request: AddFriendRequest):
     # Check if the friend_name exists in user_table
     cursor.execute("SELECT user_key FROM user_table WHERE username = ?",
                    (add_friend_request.friend_name,))
-    friend_user_key = cursor.fetchone()
+    friend_user_key = cursor.fetchone()[0]
     if not friend_user_key:
         return {"error": "Friend username does not exist"}
 
@@ -196,9 +209,10 @@ async def add_friend(request: Request, add_friend_request: AddFriendRequest):
     if cursor.fetchone():
         return {"error": "Friend already added"}
 
+    print(friend_user_key)
     # Insert the new friend information
-    cursor.execute("INSERT INTO friend_table (friend_name, user_key) VALUES (?, ?)",
-                   (add_friend_request.friend_name, add_friend_request.user_key))
+    cursor.execute("INSERT INTO friend_table (friend_key, friend_name, user_key) VALUES (?, ?, ?)",
+                   (friend_user_key, add_friend_request.friend_name, add_friend_request.user_key))
     conn.commit()
 
     return {"message": "Friend added successfully"}
@@ -213,6 +227,7 @@ async def get_friends(user_key: int):
     cursor.execute(
         "SELECT friend_key FROM friend_table WHERE user_key = ?", (user_key,))
     friends = cursor.fetchall()
+    print([friend[0] for friend in friends])
     return {"friend_key": [friend[0] for friend in friends]}
 
 
@@ -222,8 +237,8 @@ async def friend_name(friend_key: int):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT friend_name FROM friend_table WHERE friend_key = ?", (friend_key,))
-    friend = cursor.fetchall()
-    return {"friend_name": friend[0]}
+    friend = cursor.fetchone()
+    return {"friend_name": friend}
 
 
 @app.get("/chat-rooms")
@@ -247,15 +262,18 @@ async def get_messages(room_key: int):
     c = conn.cursor()
 
     c.execute(
-        """SELECT * FROM message_table WHERE room_key = ?""", (room_key,)
+        """SELECT * FROM message_table 
+        INNER JOIN user_table 
+        ON message_table.user_key = user_table.user_key
+        WHERE room_key = ?""", (room_key,)
     )
-    rowList = c.fetchall()
+    # ['message_key', 'message', 'room_key', 'user_key', 'time_stamp', 'user_key', 'username', 'password']
     messages = c.fetchall()
-    print(rowList)
-    print(messages)
+
+    print("messages", messages)
     if not messages:
-        return print("none")
-    return {{"message": msg[1], "time_stamp": msg[4]} for msg in messages}
+        return None
+    return [{'user_key': msg[3], 'username': msg[6], "message": msg[1], "time_stamp": msg[4]} for msg in messages]
 
 
 class CreatePersonalChatRoomRequest(BaseModel):

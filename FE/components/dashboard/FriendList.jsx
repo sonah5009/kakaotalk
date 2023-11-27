@@ -29,7 +29,7 @@ const FriendList = () => {
     };
     fetchFriends();
   }, []);
-
+  console.log(friends);
   const router = useRouter();
   const HandleFriendClick = async (friendKey) => {
     const userKey = parseInt(localStorage.getItem("user_key")); // Get user_key stored in local storage
