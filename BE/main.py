@@ -227,7 +227,7 @@ async def get_friends(user_key: int):
     cursor.execute(
         "SELECT friend_key FROM friend_table WHERE user_key = ?", (user_key,))
     friends = cursor.fetchall()
-    print([friend[0] for friend in friends])
+    # print([friend[0] for friend in friends])
     return {"friend_key": [friend[0] for friend in friends]}
 
 
@@ -242,19 +242,34 @@ async def friend_name(friend_key: int):
 
 
 @app.get("/chat-rooms")
-# chat room list
 async def get_chat_rooms(user_key: int):
     conn = sqlite3.connect('kakao.db')
     cursor = conn.cursor()
 
     # Fetch chat rooms for the given user
     cursor.execute(
-        "SELECT * FROM chat_room_personal_table WHERE user_key = ?", (user_key,))
+        "SELECT room_key, room_name FROM chat_room_personal_table WHERE user_key = ?", (user_key,))
     chat_rooms = cursor.fetchall()
+    print("chat_rooms", chat_rooms)
+    if not chat_rooms:
+        return None
+    return [{"room_key": room[0], "room_name": room[1]} for room in chat_rooms]
 
-    # Format and return the data
-    return {"chat_rooms": [room[2] for room in chat_rooms]}
 
+# @app.get("/chat-rooms")
+# # chat room list
+# async def get_chat_rooms(user_key: int):
+#     conn = sqlite3.connect('kakao.db')
+#     cursor = conn.cursor()
+
+#     # Fetch chat rooms for the given user
+#     cursor.execute(
+#         "SELECT * FROM chat_room_personal_table WHERE user_key = ?", (user_key,))
+#     chat_rooms = cursor.fetchall()
+#     print("chat_rooms", chat_rooms)
+#     print([room[2] for room in chat_rooms])
+#     # Format and return the data
+#     return {"chat_rooms": [room[2] for room in chat_rooms]}
 
 @app.get("/messages")
 async def get_messages(room_key: int):
@@ -270,7 +285,7 @@ async def get_messages(room_key: int):
     # ['message_key', 'message', 'room_key', 'user_key', 'time_stamp', 'user_key', 'username', 'password']
     messages = c.fetchall()
 
-    print("messages", messages)
+    # print("messages", messages)
     if not messages:
         return None
     return [{'user_key': msg[3], 'username': msg[6], "message": msg[1], "time_stamp": msg[4]} for msg in messages]
@@ -307,7 +322,7 @@ async def create_or_get_personal_chat_room(request: Request, chat_request: Creat
             ?, 
             ?
         )""",
-                   (chat_request.friend_key, chat_request.friend_key, chat_request.user_key))
+                   (chat_request.friend_key, chat_request.user_key, chat_request.friend_key))
     new_room_id = cursor.lastrowid
     new_room_key = new_room_id  # Setting room_key as the new row's id
 
@@ -317,7 +332,7 @@ async def create_or_get_personal_chat_room(request: Request, chat_request: Creat
 
     if chat_request.friend_key != chat_request.user_key:
         cursor.execute("INSERT INTO chat_room_personal_table (room_key, room_name, user_key, friend_key) VALUES (?, (SELECT friend_name FROM friend_table WHERE friend_key = ?), ?, ?)",
-                       (new_room_key, chat_request.friend_key, chat_request.user_key, chat_request.friend_key))
+                       (new_room_key, chat_request.user_key, chat_request.friend_key, chat_request.user_key))
 
     conn.commit()
 
