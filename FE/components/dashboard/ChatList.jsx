@@ -19,23 +19,27 @@ const ChatList = () => {
 
     fetchChatRooms();
   }, []);
-  console.log("chatRooms", chatRooms);
   const handleChatRoomClick = (roomKey) => {
     // Navigate to the specific chat room page
     router.push(`/dashboard/chat/${roomKey}`);
   };
-
   return (
     <div>
       <div>
         Chat Rooms:
-        <ul>
-          {chatRooms.map((room, index) => (
-            <li key={index} onClick={() => handleChatRoomClick(room.room_key)}>
-              {room.room_name}
-            </li>
-          ))}
-        </ul>
+        {chatRooms && chatRooms.length > 0 ? (
+          <ul>
+            {chatRooms.map((room, index) => (
+              <li
+                key={index}
+                onClick={() => handleChatRoomClick(room.room_key)}>
+                {room.room_name}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div>No chat rooms found.</div>
+        )}
       </div>
     </div>
   );

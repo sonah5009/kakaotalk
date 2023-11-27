@@ -98,7 +98,6 @@ async def login(login_request: LoginRequest):
                    (login_request.username, login_request.password))
 
     user = cursor.fetchone()
-    print(user)
 
     if user:
         token = secrets.token_hex()
@@ -209,7 +208,6 @@ async def add_friend(request: Request, add_friend_request: AddFriendRequest):
     if cursor.fetchone():
         return {"error": "Friend already added"}
 
-    print(friend_user_key)
     # Insert the new friend information
     cursor.execute("INSERT INTO friend_table (friend_key, friend_name, user_key) VALUES (?, ?, ?)",
                    (friend_user_key, add_friend_request.friend_name, add_friend_request.user_key))
@@ -227,7 +225,6 @@ async def get_friends(user_key: int):
     cursor.execute(
         "SELECT friend_key FROM friend_table WHERE user_key = ?", (user_key,))
     friends = cursor.fetchall()
-    # print([friend[0] for friend in friends])
     return {"friend_key": [friend[0] for friend in friends]}
 
 
@@ -250,26 +247,10 @@ async def get_chat_rooms(user_key: int):
     cursor.execute(
         "SELECT room_key, room_name FROM chat_room_personal_table WHERE user_key = ?", (user_key,))
     chat_rooms = cursor.fetchall()
-    print("chat_rooms", chat_rooms)
     if not chat_rooms:
         return None
     return [{"room_key": room[0], "room_name": room[1]} for room in chat_rooms]
 
-
-# @app.get("/chat-rooms")
-# # chat room list
-# async def get_chat_rooms(user_key: int):
-#     conn = sqlite3.connect('kakao.db')
-#     cursor = conn.cursor()
-
-#     # Fetch chat rooms for the given user
-#     cursor.execute(
-#         "SELECT * FROM chat_room_personal_table WHERE user_key = ?", (user_key,))
-#     chat_rooms = cursor.fetchall()
-#     print("chat_rooms", chat_rooms)
-#     print([room[2] for room in chat_rooms])
-#     # Format and return the data
-#     return {"chat_rooms": [room[2] for room in chat_rooms]}
 
 @app.get("/messages")
 async def get_messages(room_key: int):
@@ -285,7 +266,6 @@ async def get_messages(room_key: int):
     # ['message_key', 'message', 'room_key', 'user_key', 'time_stamp', 'user_key', 'username', 'password']
     messages = c.fetchall()
 
-    # print("messages", messages)
     if not messages:
         return None
     return [{'user_key': msg[3], 'username': msg[6], "message": msg[1], "time_stamp": msg[4]} for msg in messages]
