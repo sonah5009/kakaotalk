@@ -39,7 +39,7 @@ const FriendList = () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/create-or-get-personal-chat-room",
-
+        {
           user_key: userKey,
           friend_key: friendKey,
         }
