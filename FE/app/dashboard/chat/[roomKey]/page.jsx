@@ -71,12 +71,11 @@ const ChatPage = () => {
         });
         setInputMessage("");
         await fetchMessages();
-        scrollToBottom();
+        setTimeout(scrollToBottom, 0);
       } catch (error) {
         console.error("Error sending message:", error);
       }
     },
-    // [inputMessage, roomKey]
     [inputMessage, roomKey, fetchMessages, scrollToBottom]
   );
   const handleKeyDown = (event) => {
@@ -120,7 +119,7 @@ const ChatPage = () => {
           id="background-left"
           ref={backgroundLeftRef}>
           {messages && messages.length > 0 ? (
-            <ul className="">
+            <ul>
               {messages.map((message, index) => (
                 <li key={index}>
                   {message.user_key != currentUserKey ? (
