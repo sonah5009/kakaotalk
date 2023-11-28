@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -19,5 +18,17 @@ export default function Home() {
     }
   }, [router]); // Dependency array to ensure effect runs once
 
-  return <div className="w-full h-full bg-primary-yellow">Loading...</div>;
+  return (
+    <div className="flex-col w-full h-full text-5xl font-bold flex-center bg-primary-yellow">
+      <div className="p-3 text-lg">
+        <div>{`( =①ω①=)`}</div>
+      </div>
+      <div>
+        <div className="z-10">CatCatTalk</div>
+      </div>
+      <div className="p-3 text-lg">
+        <div>{`V(=^･ω･^=)v`}</div>
+      </div>
+    </div>
+  );
 }

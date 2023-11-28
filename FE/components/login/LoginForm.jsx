@@ -35,7 +35,10 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex-col h-full my-auto bg-gray-100 flex-center">
+    <div className="flex-col h-full my-auto bg-white rounded-lg shadow-2xl flex-center">
+      <div className="w-full p-3 mb-4 text-lg font-semibold flex-center bg-primary-yellow">
+        <div>{`( =①ω①=)`}</div>
+      </div>
       <div className="py-2 text-4xl font-bold">Login</div>
       <form className="p-6 rounded " onSubmit={handleSubmit}>
         <div>
