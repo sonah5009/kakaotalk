@@ -3,15 +3,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRef } from "react";
 import axios from "axios";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import Messages from "@/components/chat/Messages";
-import MessageInput from "@/components/chat/MessageInput";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const ChatPage = () => {
   const [currentUserKey, setCurrentUserKey] = useState(null);
   const [messages, setMessages] = useState(null);
   const [inputMessage, setInputMessage] = useState("");
-  const router = useRouter();
   const backgroundLeftRef = useRef(null);
 
   const scrollToBottom = useCallback(() => {
@@ -56,12 +53,12 @@ const ChatPage = () => {
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
+    // }, [roomKey]); // Add roomKey as a dependency
   }, [roomKey, scrollToBottom]); // Add roomKey as a dependency
 
   const handleSubmit = useCallback(
     async (e) => {
       if (e) e.preventDefault(); // Prevent default form submission if event exists
-
       if (!inputMessage.trim()) return; // Prevent empty messages
 
       try {
@@ -79,25 +76,22 @@ const ChatPage = () => {
         console.error("Error sending message:", error);
       }
     },
+    // [inputMessage, roomKey]
     [inputMessage, roomKey, fetchMessages, scrollToBottom]
   );
-
-  // [inputMessage, roomKey]);
-  // Define fetchMessages with useCallback to avoid re-creating the function on each render
-
+  const handleKeyDown = (event) => {
+    if (event.keyCode == 13 && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(event);
+    }
+  };
   useEffect(() => {
     const userKey = localStorage.getItem("user_key");
     setCurrentUserKey(userKey);
     fetchMessages();
 
-    const handleKeyDown = (event) => {
-      if (event.keyCode == 13 && !event.shiftKey) {
-        event.preventDefault();
-        handleSubmit(event);
-      }
-    };
-
     const messageInput = document.getElementById("message");
+
     if (messageInput) {
       messageInput.addEventListener("keydown", handleKeyDown);
     }
@@ -108,8 +102,7 @@ const ChatPage = () => {
         messageInput.removeEventListener("keydown", handleKeyDown);
       }
     };
-    // }, [handleSubmit]);
-  }, [fetchMessages, handleSubmit]);
+  }, [fetchMessages]);
 
   const formatMessageWithBr = (message) => {
     return { __html: message.replace(/\n/g, "<br>") };
@@ -166,9 +159,7 @@ const ChatPage = () => {
         </div>
 
         <div className="rounded-t-lg h-[100px]">
-          <form
-            className="flex flex-col items-end h-full bg-white rounded-br-sm "
-            onSubmit={handleSubmit}>
+          <form className="flex flex-col items-end h-full bg-white rounded-br-sm ">
             <textarea
               className="w-full border-none outline-none resize-none"
               name="text"
@@ -176,16 +167,19 @@ const ChatPage = () => {
               cols="50"
               rows="10"
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}></textarea>
-            <button type="submit" className="send-box" id="btn_send">
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyDown={handleKeyDown}></textarea>
+            <button
+              type="submit"
+              className="send-box"
+              id="btn_send"
+              onSubmit={handleSubmit}>
               Send
             </button>
             <div className="mb-2" />
           </form>
         </div>
       </div>
-      {/* <Messages room_key={roomKey} /> */}
-      {/* <MessageInput room_key={roomKey} /> */}
     </div>
   );
 };
