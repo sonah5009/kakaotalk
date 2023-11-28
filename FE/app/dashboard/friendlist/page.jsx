@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 
 const FriendListPage = () => {
   return (
-    <div>
+    <div className="px-5 py-4">
+      <div className="py-2 font-bold">Friends</div>
       <FriendList />
     </div>
   );

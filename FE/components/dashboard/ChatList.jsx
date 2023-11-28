@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation"; // or the appropriate import based on your routing setup
+import { MdPerson } from "react-icons/md";
 
 const ChatList = () => {
   const [chatRooms, setChatRooms] = useState([]);
@@ -26,13 +27,17 @@ const ChatList = () => {
   return (
     <div>
       <div>
-        Chat Rooms:
         {chatRooms && chatRooms.length > 0 ? (
           <ul>
             {chatRooms.map((room, index) => (
               <li
                 key={index}
-                onClick={() => handleChatRoomClick(room.room_key)}>
+                onClick={() => handleChatRoomClick(room.room_key)}
+                className="flex py-1 hover:bg-surface-dark/20">
+                <MdPerson
+                  size={40}
+                  className="mx-2 text-2xl rounded-md bg-primary-skyblue text-background"
+                />
                 {room.room_name}
               </li>
             ))}

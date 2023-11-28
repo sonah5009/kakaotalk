@@ -15,20 +15,22 @@ const DashboardLayout = ({ children }) => {
     router.push("/");
   };
   return (
-    <div className="flex flex-row w-full h-full bg-background">
-      <nav className="flex flex-col justify-center space-y-4">
-        <Link href="/dashboard/friendlist">
+    <div className="flex flex-row w-full h-full bg-surface">
+      <nav className="flex flex-col items-center justify-start w-2/12 px-2 py-8 space-y-4">
+        <Link href="/dashboard/friendlist" className="hover:text-slate-800/40">
           <MdPerson />
         </Link>
-        <Link href="/dashboard/chatlist">
+        <Link href="/dashboard/chatlist" className="hover:text-slate-800/40">
           <IoChatbubbleSharp />
         </Link>
-        <Link href="/dashboard/addfriend">
+        <Link href="/dashboard/addfriend" className="hover:text-slate-800/40">
           <MdPersonAddAlt1 />
         </Link>
-        <button onClick={handleLogout}>logout</button>
+        <button onClick={handleLogout} className="hover:text-slate-800/40">
+          logout
+        </button>
       </nav>
-      <div>{children}</div>
+      <div className="w-10/12 bg-background">{children}</div>
     </div>
   );
 };

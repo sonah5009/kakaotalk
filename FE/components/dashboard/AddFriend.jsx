@@ -35,7 +35,7 @@ const AddFriend = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen ">
+    <div className="flex-col mt-3 flex-center">
       <form className="p-6 bg-white rounded shadow-md" onSubmit={handleSubmit}>
         <div>
           <label
@@ -55,7 +55,7 @@ const AddFriend = () => {
         <div className="mt-6">
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+            className="w-full px-4 py-2 text-black rounded-md bg-primary-yellow hover:bg-yellow-400">
             Add
           </button>
         </div>

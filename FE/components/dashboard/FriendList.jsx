@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { MdPerson } from "react-icons/md";
 
 const FriendList = () => {
   const [friends, setFriends] = useState([]);
@@ -29,7 +29,7 @@ const FriendList = () => {
     };
     fetchFriends();
   }, []);
-  console.log(friends);
+
   const router = useRouter();
   const HandleFriendClick = async (friendKey) => {
     const userKey = parseInt(localStorage.getItem("user_key")); // Get user_key stored in local storage
@@ -43,25 +43,41 @@ const FriendList = () => {
         }
       );
       const { room_id, room_key, room_name } = response.data;
-      // router.push(`/dashboard/chat/${room_key}`);
-      router.push(`/dashboard/chat/${room_key}`, {
-        pathname: `/dashboard/chat/${room_key}`, // You might still want to pass room_id in URL
-        query: { room_key: room_key }, // Pass room_key as part of the query
-      });
+      router.push(`/dashboard/chat/${room_key}`);
     } catch (error) {
       console.error("Error creating/getting chat room", error.response.data);
       // Handle error
     }
   };
+  const myName = friends[0]?.name; // Safely access the first friend's name
+  const myNameKey = friends[0]?.key; // Safely access the first friend's name
 
   return (
     <div>
-      {/* <div>나: {friends}</div> */}
       <div>
-        칭긔들:
         <ul>
-          {friends.map((friend, index) => (
-            <li key={index} onClick={() => HandleFriendClick(friend.key)}>
+          <li
+            className="flex py-1 hover:bg-surface-dark/20"
+            onClick={() => HandleFriendClick(myNameKey)}>
+            <MdPerson
+              size={40}
+              className="mx-2 text-2xl rounded-md bg-primary-skyblue text-background"
+            />
+            {myName}
+          </li>
+        </ul>
+        <ul>
+          <br />
+          <div className="text-sm font-light ">Friends</div>
+          {friends.slice(1)?.map((friend, index) => (
+            <li
+              key={index}
+              className="flex py-1 hover:bg-surface-dark/20"
+              onClick={() => HandleFriendClick(friend.key)}>
+              <MdPerson
+                size={40}
+                className="mx-2 text-2xl rounded-md bg-primary-skyblue text-background"
+              />
               {friend.name}
             </li>
           ))}

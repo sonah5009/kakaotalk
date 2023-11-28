@@ -3,8 +3,8 @@ import React from "react";
 
 const ChatListPage = () => {
   return (
-    <div>
-      hi
+    <div className="px-5 py-4">
+      <div className="py-2 font-bold">Chats</div>
       <ChatList />
     </div>
   );

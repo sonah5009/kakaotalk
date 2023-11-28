@@ -15,6 +15,7 @@ const Rootlayout = ({ children }) => {
         {/* <div className="main">
           <div></div>
         </div> */}
+        <header className="py-3"></header>
         <main className="app login">{children}</main>
       </body>
     </html>

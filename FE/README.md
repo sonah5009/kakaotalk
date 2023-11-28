@@ -1,5 +1,6 @@
 # 설치
 
+`npm install --save @types/react-scroll-to-bottom`
 `yarn add axios`
 `yarn add react-icons`
 
