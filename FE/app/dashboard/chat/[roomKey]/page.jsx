@@ -13,13 +13,13 @@ const ChatPage = () => {
   const [inputMessage, setInputMessage] = useState("");
   const router = useRouter();
   const backgroundLeftRef = useRef(null);
-  const scrollToBottom = () => {
-    console.log("height", backgroundLeftRef.current.scrollHeight);
+
+  const scrollToBottom = useCallback(() => {
     if (backgroundLeftRef.current) {
       backgroundLeftRef.current.scrollTop =
         backgroundLeftRef.current.scrollHeight;
     }
-  };
+  }, []);
 
   function convertToReadableTime(timestamp) {
     // Extract the time part from the timestamp
@@ -45,46 +45,59 @@ const ChatPage = () => {
 
   const url = `${pathname}?${searchParams}`;
   const roomKey = extractNumericPart(url);
-  ///////////////
 
-  // const fetchMessages = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:8000/messages", {
-  //       params: { room_key: roomKey },
-  //     });
-  //     setMessages(response.data);
-  //     // scrollToBottom();
-  //   } catch (error) {
-  //     console.error("Error fetching messages:", error);
-  //   }
-  // };
-  // Define fetchMessages with useCallback to avoid re-creating the function on each render
   const fetchMessages = useCallback(async () => {
     try {
       const response = await axios.get("http://localhost:8000/messages", {
         params: { room_key: roomKey },
       });
       setMessages(response.data);
-      scrollToBottom(); // Call scrollToBottom here after messages are set
+      setTimeout(scrollToBottom, 0);
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
-  }, [roomKey]); // Add roomKey as a dependency
+  }, [roomKey, scrollToBottom]); // Add roomKey as a dependency
+
+  const handleSubmit = useCallback(
+    async (e) => {
+      if (e) e.preventDefault(); // Prevent default form submission if event exists
+
+      if (!inputMessage.trim()) return; // Prevent empty messages
+
+      try {
+        const userKey = localStorage.getItem("user_key");
+        setCurrentUserKey(userKey);
+        await axios.post("http://localhost:8000/insert-message", {
+          message: inputMessage,
+          user_key: userKey,
+          room_key: roomKey,
+        });
+        setInputMessage("");
+        await fetchMessages();
+        scrollToBottom();
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+    },
+    [inputMessage, roomKey, fetchMessages, scrollToBottom]
+  );
+
+  // [inputMessage, roomKey]);
+  // Define fetchMessages with useCallback to avoid re-creating the function on each render
 
   useEffect(() => {
     const userKey = localStorage.getItem("user_key");
     setCurrentUserKey(userKey);
     fetchMessages();
 
-    // Add keydown event listener for the message input
-    const messageInput = document.getElementById("message");
     const handleKeyDown = (event) => {
       if (event.keyCode == 13 && !event.shiftKey) {
-        handleSubmit();
         event.preventDefault();
+        handleSubmit(event);
       }
     };
 
+    const messageInput = document.getElementById("message");
     if (messageInput) {
       messageInput.addEventListener("keydown", handleKeyDown);
     }
@@ -95,33 +108,8 @@ const ChatPage = () => {
         messageInput.removeEventListener("keydown", handleKeyDown);
       }
     };
-    // });
-  }, [fetchMessages]);
-
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault(); // Prevent default form submission if event exists
-
-    if (!inputMessage.trim()) return; // Prevent empty messages
-
-    try {
-      const userKey = localStorage.getItem("user_key");
-      setCurrentUserKey(userKey);
-      // Replace with the actual URL and adjust parameters as needed
-      await axios.post("http://localhost:8000/insert-message", {
-        message: inputMessage,
-        user_key: userKey,
-        room_key: roomKey,
-      });
-      setInputMessage(""); // Clear the textarea after sending
-      fetchMessages();
-      scrollToBottom();
-    } catch (error) {
-      console.error("Error sending message:", error);
-      // Handle error appropriately
-    }
-    router.refresh();
-  };
-  // [inputMessage, roomKey]);
+    // }, [handleSubmit]);
+  }, [fetchMessages, handleSubmit]);
 
   const formatMessageWithBr = (message) => {
     return { __html: message.replace(/\n/g, "<br>") };
