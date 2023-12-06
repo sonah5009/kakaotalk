@@ -32,9 +32,6 @@ def create_database_and_tables():
             password TEXT
         )
     ''')
-    # c.execute('''
-    #     INSERT INTO user_table (username, password) VALUES ('test', 'test');
-    #     ''')
 
     # 테이블 생성
     c.execute('''

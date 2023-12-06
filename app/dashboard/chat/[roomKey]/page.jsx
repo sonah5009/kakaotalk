@@ -101,7 +101,8 @@ const ChatPage = () => {
         messageInput.removeEventListener("keydown", handleKeyDown);
       }
     };
-  }, [fetchMessages]);
+  }, []);
+  // }, [fetchMessages]);
 
   const formatMessageWithBr = (message) => {
     return { __html: message.replace(/\n/g, "<br>") };

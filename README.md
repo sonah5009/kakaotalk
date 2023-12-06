@@ -1,3 +1,10 @@
+# 실행
+
+yarn dev
+
+cd /BE
+uvicorn main:app --reload
+
 # 설치
 
 `npm install --save @types/react-scroll-to-bottom`

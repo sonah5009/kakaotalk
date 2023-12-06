@@ -1,3 +1,4 @@
+// TODO: 최근 메시지로 표시
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -7,6 +8,11 @@ import { MdPerson } from "react-icons/md";
 const ChatList = () => {
   const [chatRooms, setChatRooms] = useState([]);
   const router = useRouter();
+  const sortChatRooms = () => {
+    // 최근 메시지가 위로 올라오도록 재정렬
+    // 사용자 이름 및 최근 채팅 표시
+    // user key 에 맞는 message_table 합치고
+  };
 
   useEffect(() => {
     const fetchChatRooms = async () => {
