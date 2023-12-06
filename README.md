@@ -2,8 +2,7 @@
 
 yarn dev
 
-cd /BE
-uvicorn main:app --reload
+npm run start-api
 
 # 설치
 

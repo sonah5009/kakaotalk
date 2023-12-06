@@ -39,14 +39,6 @@
       "static/chunks/630-f0b8827eb0c9ece0.js",
       "static/chunks/app/signup/page-64de3bef49daa5dd.js"
     ],
-    "/dashboard/addfriend/page": [
-      "static/chunks/webpack-c9ae739f8ad548de.js",
-      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
-      "static/chunks/472-827124462be3f40e.js",
-      "static/chunks/main-app-1d9206f62625fd0c.js",
-      "static/chunks/630-f0b8827eb0c9ece0.js",
-      "static/chunks/app/dashboard/addfriend/page-fc1ab5fe3af96a43.js"
-    ],
     "/dashboard/layout": [
       "static/chunks/webpack-c9ae739f8ad548de.js",
       "static/chunks/fd9d1056-84ce8cf6505805f3.js",
@@ -56,6 +48,14 @@
       "static/chunks/ec3863c0-ee7927571a5872a1.js",
       "static/chunks/396-6db4361a58de2585.js",
       "static/chunks/app/dashboard/layout-638afee4a7f5ef74.js"
+    ],
+    "/dashboard/addfriend/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/app/dashboard/addfriend/page-fc1ab5fe3af96a43.js"
     ],
     "/dashboard/chat/[roomKey]/page": [
       "static/chunks/webpack-c9ae739f8ad548de.js",
