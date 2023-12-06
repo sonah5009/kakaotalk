@@ -1,0 +1,96 @@
+{
+  "pages": {
+    "/_not-found": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/app/_not-found-31d9247b7a43de8d.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/css/72dfdb52a306f538.css",
+      "static/chunks/app/layout-736c381766016b67.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/396-6db4361a58de2585.js",
+      "static/chunks/app/login/page-dc78ca8d18c86ab2.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/app/page-badc01e22ca84a18.js"
+    ],
+    "/signup/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/app/signup/page-64de3bef49daa5dd.js"
+    ],
+    "/dashboard/addfriend/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/app/dashboard/addfriend/page-fc1ab5fe3af96a43.js"
+    ],
+    "/dashboard/layout": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/bc9c3264-165c8c4dda9f9bd1.js",
+      "static/chunks/ec3863c0-ee7927571a5872a1.js",
+      "static/chunks/396-6db4361a58de2585.js",
+      "static/chunks/app/dashboard/layout-638afee4a7f5ef74.js"
+    ],
+    "/dashboard/chat/[roomKey]/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/app/dashboard/chat/[roomKey]/page-66218624b6fbf7e3.js"
+    ],
+    "/dashboard/chatlist/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/bc9c3264-165c8c4dda9f9bd1.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/app/dashboard/chatlist/page-40a24a28d3ac7807.js"
+    ],
+    "/dashboard/friendlist/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/bc9c3264-165c8c4dda9f9bd1.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/app/dashboard/friendlist/page-17dc69d935935381.js"
+    ],
+    "/dashboard/page": [
+      "static/chunks/webpack-c9ae739f8ad548de.js",
+      "static/chunks/fd9d1056-84ce8cf6505805f3.js",
+      "static/chunks/472-827124462be3f40e.js",
+      "static/chunks/main-app-1d9206f62625fd0c.js",
+      "static/chunks/bc9c3264-165c8c4dda9f9bd1.js",
+      "static/chunks/630-f0b8827eb0c9ece0.js",
+      "static/chunks/app/dashboard/page-3f2528a3b0e7a436.js"
+    ]
+  }
+}

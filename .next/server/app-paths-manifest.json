@@ -1,0 +1,12 @@
+{
+  "/_not-found": "app/_not-found.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/dashboard/addfriend/page": "app/dashboard/addfriend/page.js",
+  "/dashboard/chat/[roomKey]/page": "app/dashboard/chat/[roomKey]/page.js",
+  "/dashboard/chatlist/page": "app/dashboard/chatlist/page.js",
+  "/dashboard/friendlist/page": "app/dashboard/friendlist/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
+}
