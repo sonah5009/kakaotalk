@@ -1,3 +1,15 @@
+# Dockerfile
+
+docker tag cat-cat-talk:v1 sonah5009/cat-cat-talk:v1
+(base) ➜ kakaotalk git:(main) ✗ docker push sonah5009/cat-cat-talk:v1
+
+- docker build -t [이미지 이름:이미지 버전] [Dockerfile의 경로]
+  `docker build -t cat-cat-talk:v2 .`
+
+docker run -i -t -d --name cat-cat-talk:v2 cat-cat-talk
+
+docker run -it cat-cat-talk:v2
+
 # 실행
 
 yarn dev
